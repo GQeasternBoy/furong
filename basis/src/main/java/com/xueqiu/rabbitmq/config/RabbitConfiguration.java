@@ -2,6 +2,7 @@ package com.xueqiu.rabbitmq.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -61,5 +62,34 @@ public class RabbitConfiguration {
     public RabbitTemplate rabbitTemplate(){
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         return rabbitTemplate;
+    }
+
+    /**
+     * 设置交换机
+     * @return
+     */
+    @Bean
+    public DirectExchange directExchange(){
+        return new DirectExchange(EXCHANGE_A);
+    }
+
+    @Bean
+    public FanoutExchange fanoutExchange(){
+        return new FanoutExchange(EXCHANGE_C);
+    }
+
+    @Bean
+    public Queue queue(){
+        return new Queue(QUEUE_A,true);
+    }
+
+    @Bean
+    public Binding binding(){
+        return BindingBuilder.bind(queue()).to(directExchange()).with(RabbitConfiguration.ROUTINGKEY_A);
+    }
+
+    @Bean
+    public Binding bindingFanout(){
+        return BindingBuilder.bind(queue()).to(fanoutExchange());
     }
 }
