@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/beans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf_token}"/>
+    <meta name="_csrf_header" th:content="${_csrf_headerName}"/>
+    <script type="text/javascript" src="../static/js/jquery-2.2.3.min.js"></script>
+    <title>登录</title>
+</head>
+
+<body>
+    <input id="button" type="button" name="提交"/>
+</body>
+<script th:inline="javascript">
+    $("#button").click(function () {
+        $.ajax({
+            url:'http://localhost:8080/jartest',
+            type:"post",
+            jsonp:"callbacks",
+            jsonpCallback:"success",
+            dataType:"jsonp",
+            success:function (res) {
+                alert(res);
+            }
+        });
+    })
+    $(function() {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("header");
+        $(document).ajaxSend(function (event, xhr, options) {
+            xhr.setRequestHeader('_csrf_header', '_csrf');
+        });
+    });
+</script>
+</html>
