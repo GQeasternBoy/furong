@@ -3,6 +3,7 @@ package com.xueqiu.security.config;
 import com.xueqiu.security.entity.Role;
 import com.xueqiu.security.entity.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,11 +19,23 @@ import java.util.List;
  * @Date:2018/11/21
  * @Description:获取为用户分配的权限列表
  */
+@NoArgsConstructor
 public class SecurityUser extends User implements UserDetails{
 
     @Getter
     @Setter
     private List<Role> roles;
+
+    @Getter
+    @Setter
+    private User user;
+
+    public SecurityUser() {
+    }
+
+    public SecurityUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

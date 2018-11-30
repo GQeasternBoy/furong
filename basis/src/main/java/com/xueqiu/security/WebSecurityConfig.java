@@ -2,7 +2,10 @@ package com.xueqiu.security;
 
 import com.xueqiu.security.config.CsrfSecurityRequestMatcher;
 import com.xueqiu.security.config.SecuritySettings;
-import com.xueqiu.security.repository.UserRepository;
+import com.xueqiu.security.interceptor.CustomAccessDecisionManager;
+import com.xueqiu.security.interceptor.CustomFilterSecurityInterceptor;
+import com.xueqiu.security.interceptor.CustomSecurityMetadataSource;
+import com.xueqiu.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 
-import javax.activation.DataSource;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,16 +44,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and().logout().logoutSuccessUrl(settings.getLogoutSuccessUrl())
                 .and().exceptionHandling().accessDeniedPage(settings.getDeniedPage())
-                .and().rememberMe().tokenValiditySeconds(15*60).tokenRepository(tokenRepository())
+                .and().rememberMe().tokenValiditySeconds(15*60).tokenRepository(tokenRepository());
     }
 
     @Autowired
-    private UserRepository userRepository;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        userRepository.findByName()
-        super.configure(auth);
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.eraseCredentials(false);
     }
 
     @Autowired
@@ -74,5 +77,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CustomSecurityMetadataSource customSecurityMetadataSource(){
+        return new CustomSecurityMetadataSource(settings.getUrlRoles());
+    }
+
+    @Bean
+    public CustomAccessDecisionManager customAccessDecisionManager(){
+        return new CustomAccessDecisionManager();
+    }
+    @Bean
+    public CustomFilterSecurityInterceptor customFilter() throws Exception {
+        CustomFilterSecurityInterceptor customFilter = new CustomFilterSecurityInterceptor();
+        customFilter.setSecurityMetadataSource(customSecurityMetadataSource());
+        customFilter.setAuthenticationManager(authenticationManager());
+        return customFilter;
     }
 }
