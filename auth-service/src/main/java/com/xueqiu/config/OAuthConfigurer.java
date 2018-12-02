@@ -1,4 +1,4 @@
-package com.xueqiu.oauth2;
+package com.xueqiu.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,18 +12,18 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import java.security.KeyPair;
 
 /**
- * @Author:ggq
- * @Date:2018/11/30
- * @Description:OAuth2服务端配置
+ * Created by 郭根权 on 2018/12/2.
+ * OAuth2服务端配置
  */
 @Configuration
 @EnableAuthorizationServer
-public class OAuthConfigure extends AuthorizationServerConfigurerAdapter{
+public class OAuthConfigurer extends AuthorizationServerConfigurerAdapter{
+
 
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"),"tc123456".toCharArray())
+        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"),"123456".toCharArray())
                 .getKeyPair("tycoonclient");
         converter.setKeyPair(keyPair);
         return converter;

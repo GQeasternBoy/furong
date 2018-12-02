@@ -19,7 +19,6 @@ import java.util.List;
  * @Date:2018/11/21
  * @Description:获取为用户分配的权限列表
  */
-@NoArgsConstructor
 public class SecurityUser extends User implements UserDetails{
 
     @Getter
