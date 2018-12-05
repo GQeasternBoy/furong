@@ -77,7 +77,7 @@ ThresholdFilter为系统定义的拦截器，例如我们用ThresholdFilter来�
         <charset>UTF-8</charset>
         <pattern>%d [%thread] %-5level %logger{36} %line - %msg%n</pattern>
     </encoder>
-
+    </appender>
 
     <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
     <springProfile name="test,dev">

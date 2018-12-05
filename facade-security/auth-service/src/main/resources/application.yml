@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: auth-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/furong?useUnicode=true&characterEncoding=utf-8&characterSetResults=utf-8
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  context-path: /authservice
+  port: 8082
+
+security:
+  oauth2:
+    resource:
+      filter-order: 3

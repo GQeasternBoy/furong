@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: sso-client
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/furong?useUnicode=true&characterEncoding=utf-8&characterSetResults=utf-8
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  context-path: /ssoclient
+  port: 8081
+
+security:
+  ignored: /favicon.ico,/scripts/**,/styles/**,/images/**
+  sessions: always
+  oauth2:
+    client:
+      client-id: ssoclient
+      client-secret: ssosecret
+      access-token-uri: http://localhost:8082/authservice/oauth/token
+      user-authorization-uri: http://localhost:8082/authservice/oauth/authorize
+      authentication-scheme: form
+      scope: server
+    resource:
+      jwt:
+        key-uri: http://localhost:8082/authservice/oauth/token_key
+
+
+

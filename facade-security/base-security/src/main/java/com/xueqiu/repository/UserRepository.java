@@ -1,6 +1,7 @@
 package com.xueqiu.repository;
 
 import com.xueqiu.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Repository;
  * @Description:用户信息数据库操作
  */
 @Repository
-public interface UserRepository {
+public interface UserRepository extends JpaRepository<User,Long>{
 
-    User findByName(String userName);
+    User findByUserName(String userName);
 }
 
