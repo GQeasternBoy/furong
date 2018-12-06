@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/authservice/login").permitAll()//登录地址允许所有
+        http.formLogin().loginPage("/login").permitAll()//登录地址允许所有
 //                .loginProcessingUrl("/authservice/login/form")
                 .failureUrl("/login-error").and()//登录失败页
                 .authorizeRequests().antMatchers("/images/**","/checkcode","/scripts","/index/**","/css/**").permitAll() //不需要认证就可以访问
