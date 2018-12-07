@@ -36,15 +36,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().loginPage("/login").permitAll()//登录地址允许所有
-//                .loginProcessingUrl("/authservice/login/form")
+                .loginProcessingUrl("/authservice/login/form")
                 .failureUrl("/login-error").and()//登录失败页
                 .authorizeRequests().antMatchers("/images/**","/checkcode","/scripts","/index/**","/css/**").permitAll() //不需要认证就可以访问
 //                .antMatchers(settings.getPermitAll().split(",")).permitAll()
                 .anyRequest().authenticated()
-//                .and().csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and().exceptionHandling().accessDeniedPage("/deny")
-                .and().rememberMe().tokenValiditySeconds(15*60).tokenRepository(tokenRepository());
+                .and().csrf().disable()
+                .rememberMe().tokenValiditySeconds(15*60).tokenRepository(tokenRepository());
     }
 
     @Autowired

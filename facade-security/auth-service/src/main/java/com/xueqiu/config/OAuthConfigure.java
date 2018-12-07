@@ -1,6 +1,7 @@
 package com.xueqiu.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -30,6 +31,7 @@ import java.security.KeyPair;
 public class OAuthConfigure extends AuthorizationServerConfigurerAdapter{
 
     @Autowired
+    @Qualifier("authenticationManagerBean")
     AuthenticationManager authenticationManager;
 
     @Override
@@ -42,8 +44,8 @@ public class OAuthConfigure extends AuthorizationServerConfigurerAdapter{
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
                 .allowFormAuthenticationForClients()
-                .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+                .tokenKeyAccess("isAuthenticated()")
+                .checkTokenAccess("permitAll()");
     }
 
     /**
@@ -54,7 +56,8 @@ public class OAuthConfigure extends AuthorizationServerConfigurerAdapter{
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("ssoclient").secret("ssosecret").autoApprove(true)
-                .authorizedGrantTypes("authorization_code","password").scopes("server");
+                .authorizedGrantTypes("authorization_code","refresh_token").scopes("server")
+                .accessTokenValiditySeconds(3600);
     }
 
     @Bean
@@ -65,9 +68,10 @@ public class OAuthConfigure extends AuthorizationServerConfigurerAdapter{
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"),"123456".toCharArray())
-                .getKeyPair("tycoonclient");
-        converter.setKeyPair(keyPair);
+//        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"),"123456".toCharArray())
+//                .getKeyPair("tycoonclient");
+//        converter.setKeyPair(keyPair);
+        converter.setSigningKey("tycoonclient");
         return converter;
     }
 }

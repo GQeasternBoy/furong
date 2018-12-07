@@ -21,31 +21,27 @@ import java.util.List;
  * @Description:客户端安全策略配置
  */
 @Configuration
-@EnableConfigurationProperties(SecuritySettings.class)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+//@EnableConfigurationProperties(SecuritySettings.class)
+public class SecurityConfiguration /*extends WebSecurityConfigurerAdapter*/{
 
 //    @Autowired
 //    private SecuritySettings settings;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/**").authorizeRequests()
-//                .antMatchers(settings.getPermitAll().split(",")).permitAll()
-                .anyRequest().authenticated()
-                .and().csrf().requireCsrfProtectionMatcher(csrfSecurityRequestMatcher())
-                .and().logout().logoutUrl("/logout").permitAll()
-//                .logoutSuccessUrl(settings.getLogoutSuccessUrl())
-                .and().exceptionHandling().accessDeniedPage("/deny");
-    }
-
-    @Bean
-    public CsrfSecurityRequestMatcher csrfSecurityRequestMatcher(){
-        CsrfSecurityRequestMatcher csrfSecurityRequestMatcher = new CsrfSecurityRequestMatcher();
-        List<String> list = new ArrayList<>();
-        list.add("/rest/");
-        csrfSecurityRequestMatcher.setExecludeUrls(list);
-        return csrfSecurityRequestMatcher;
-    }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and().csrf().disable();
+//    }
+//
+//    @Bean
+//    public CsrfSecurityRequestMatcher csrfSecurityRequestMatcher(){
+//        CsrfSecurityRequestMatcher csrfSecurityRequestMatcher = new CsrfSecurityRequestMatcher();
+//        List<String> list = new ArrayList<>();
+//        list.add("/rest/");
+//        csrfSecurityRequestMatcher.setExecludeUrls(list);
+//        return csrfSecurityRequestMatcher;
+//    }
 
 
 //    @Bean
@@ -66,10 +62,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 //        return customFilter;
 //    }
 //
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    /*@Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }*/
 
 }

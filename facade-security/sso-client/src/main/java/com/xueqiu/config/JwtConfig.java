@@ -15,20 +15,20 @@ import java.security.KeyPair;
  * @Date:2018/12/5
  * @Description:
  */
-@Configuration
+//@Configuration
 public class JwtConfig {
 
-    @Bean
-    public TokenStore tokenStore(){
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter(){
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"),"123456".toCharArray())
-                .getKeyPair("tycoonclient");
-        converter.setKeyPair(keyPair);
-        return converter;
-    }
+//    @Bean
+//    public TokenStore tokenStore(){
+//        return new JwtTokenStore(jwtAccessTokenConverter());
+//    }
+//
+//    @Bean
+//    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"),"123456".toCharArray())
+//                .getKeyPair("tycoonclient");
+//        converter.setKeyPair(keyPair);
+//        return converter;
+//    }
 }

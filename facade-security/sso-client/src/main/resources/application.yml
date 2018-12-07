@@ -27,6 +27,7 @@ security:
       user-authorization-uri: http://localhost:8082/authservice/oauth/authorize
       authentication-scheme: form
       scope: server
+      grant-type: refresh_token
     resource:
       jwt:
         key-uri: http://localhost:8082/authservice/oauth/token_key
