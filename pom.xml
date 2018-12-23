@@ -21,6 +21,7 @@
 		<module>basis</module>
 		<module>api-gateway</module>
 		<module>facade-security</module>
+		<module>vue</module>
 	</modules>
 
 	<properties>

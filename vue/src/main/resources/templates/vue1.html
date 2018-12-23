@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>vue实例</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="name" placeholder="你的名字">
+        <h1>你好，{{name}}</h1>
+        <h2>{{date | formatDate}}</h2>
+        <span v-html="link"></span>
+        <span v-pre>{{这里的内容是不会被编译的}}</span>
+        <span>
+            {{number /10}}
+            {{isOk ? '确定':'取消'}}
+            {{text.split(',').reverse().join(',')}}
+        </span>
+        <h2>
+            <a v-bind:href="url"></a>
+            <img v-bind:src="imgUrl">
+        </h2>
+        <div>
+            <p v-if="show">这是一段文本</p>
+            <button v-on:click="handleClose">点击隐藏</button>
+        </div>
+        <h2>{{reversedText}}</h2>
+        <div>总价：{{prices}}</div>
+        <h2>{{fullName}}</h2>
+    </div>
+    <script src="../static/js/vue/vue.js"></script>
+    <script>
+        <!--在月份、日期、小时等小于10前面补0-->
+        var padDate = function (value) {
+            return value < 10 ? '0'+value : value;
+        };
+
+        var app = new Vue({
+            el :"#app",
+            data:{
+                name:'',
+                date: new Date(),
+                link: '<a href="#">这是一个链接</a>',
+                number :100,
+                isOk:false,
+                text:'123,456',
+                url:'https://www.github.com',
+                imgUrl:'http://www.xueqiu.com/img.png',
+                show:true,
+                package1:[
+                    {
+                        name:'iphone7',
+                        price:7199,
+                        count:2
+                    },
+                    {
+                        name:'ipad',
+                        price:2888,
+                        count:1
+                    }
+                ],
+                package2:[
+                    {
+                        name:'apple',
+                        price:3,
+                        count:5
+                    },
+                    {
+                        name:'banana',
+                        price:2,
+                        count:10
+                    }
+                ],
+                firstName:'Jack',
+                lastName:'Green'
+            },
+            mounted: function () {
+                var _this = this;
+                _this.timer = setInterval(function () {
+                    _this.date = new Date();
+                },1000)
+            },
+            beforeDestroy:function () {
+                if (_this.timer) {
+                    clearInterval(_this.timer);
+                }
+            },
+            filters:{
+                formatDate:function (value) {
+                    var date = new Date(value);
+                    var year = date.getFullYear();
+                    var month = padDate(date.getMonth() + 1);
+                    var day = padDate(date.getDate());
+                    var hours = padDate(date.getHours());
+                    var minutes = padDate(date.getMinutes());
+                    var seconds = padDate(date.getSeconds());
+                    return year + "-" + month + "-" +day + " " + hours + ":" + minutes + ":" + seconds;
+                }
+            },
+            methods:{
+                handleClose:function () {
+                    this.show = false;
+                }
+            },
+            computed:{
+                reversedText:function () {
+                    return this.text.split(',').reverse().join(',');
+                },
+                prices:function () {
+                    var prices = 0;
+                    for (var i = 0; i < this.package1.length; i++){
+                        prices += this.package1[i].price * this.package1[i].count;
+                    }
+                    for (var i = 0; i < this.package2.length; i++){
+                        prices += this.package2[i].price * this.package2[i].count;
+                    }
+                    return prices;
+                },
+                fullName:{
+                    get:function () {
+                        return this.firstName + " " + this.lastName;
+                    },
+                    set:function (newValue) {
+                        var names = newValue.split(' ');
+                        this.firstName = names[0];
+                        this.lastName = names[names.length - 1];
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
